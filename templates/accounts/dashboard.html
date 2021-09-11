@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    Password Manager - Dashboard
+{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="container">
+
+       
+        <div class="container d-lg-flex d-sm-block my-3">
+            {% if not request.user.profile_image %}
+            <p>
+                you haven't uploaded profile image.
+            </p>
+            {% else %}
+                <img height="300" width="300" class="rounded m-2" src={{ request.user.profile_image.url }}>
+            {% endif %}
+
+            <div class="container_fluid text-center">
+                 <p class="header_para">
+                Your secret key
+                </p>
+                <p>
+                    <span id="secret_key" class="highlight"></span>
+                    <i class="fas fa-eye" id="togglePassword" onclick="toggle()" style="cursor: pointer;"></i>
+                </p>
+                <p>
+                    This would be used to perform all
+                    your password and file encryption, please do not share this with others.
+                </p>
+
+                <div class="container_fluid my-3">
+                    <p class="text-success my-3">You can update your account settings from here !</p>
+                    <a class="btn btn-primary" href={% url 'accounts:update_profile_image' %}>Update Profile Image</a>
+                    <a class="btn btn-primary" href={% url 'accounts:update_settings' %}>Update Username/Email</a>
+                    <a class="btn btn-primary" href={% url 'accounts:update_password' %}>Update Password</a>
+                </div>
+            </div>
+        </div>
+
+        <ul class="list-group">
+            <a class="list-group-item" href={% url 'passwords:create_category' %}>Create Category</a>
+            <a class="list-group-item" href={% url 'passwords:create_password' %}>Create Password</a>
+            <a class="list-group-item" href={% url 'passwords:create_generated_password' %}>Generate Password</a>
+            <a class="list-group-item" href={% url 'passwords:upload_file' %}>Upload File</a>
+        </ul>
+    </div>
+    <script src={% static 'js/jquery.js' %}></script>
+    <script>
+        let s="{{ request.user.user_secret_key }}";
+            let n="";
+            for(var i=0;i<s.length;i++){
+                n=n+"*";
+            }
+            $("#secret_key").text(n);
+        
+        function toggle(){
+            let s="{{ request.user.user_secret_key }}";
+            let e=document.getElementById("togglePassword");
+            let en=e.className;
+            if(en=="fas fa-eye"){
+                e.className="fas fa-eye-slash";
+                $("#secret_key").text(s);
+            }
+            else{
+                e.className="fas fa-eye";
+                $("#secret_key").text(n);
+            }
+        }
+    </script>
+{% endblock %}
+

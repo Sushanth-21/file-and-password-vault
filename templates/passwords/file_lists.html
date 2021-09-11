@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Password Manager - List of Files
+{% endblock %}
+
+{% block content %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% endif %}" role="alert">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container">
+        <h2 class="text-center text-success my-3" style="color: #6c757d!important;">FILE VAULT</h2>
+        {% if not files.count %}
+            <h3 class="text-center text-warning my-3">Your file vault is empty.</h3>
+        {% else %}
+            
+            {% for each_file in files %}
+                <div class="container-fluid shadow border-dark p-3 my-3">
+                    <div class="d-md-flex d-sm-block d justify-content-between">
+                        <div class="text-container">
+                            <p class="text-secondary h4 my-3">
+                                Description :- {{ each_file.file_description }}
+                            </p>
+                            <p class="text-secondary h5 my-2">
+                                Size :- {{ each_file.get_file_size }}
+                            </p>
+                        </div>
+                        <div class="container_fluid">
+                            <a class="btn btn-danger m-1" href={% url 'passwords:file_delete' pk=each_file.id %}>Delete</a>
+                            <a class="btn btn-secondary m-1" href={% url 'passwords:file_detail' pk=each_file.id %}>
+                                Decrypt</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Password Manager - File Detail
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        <h2 class="text-center text-success my-3" style="color: #6c757d!important;">FILE INFO</h2>
+        <div class="container-fluid shadow rounded p-3 my-3">
+            <p>
+                {{ file_obj.file_description }}
+            </p>
+
+            <p>
+                {{ file_obj.get_decr_file_size }}
+            </p>
+            
+            <a class="btn btn-success" href="{{ file_path }}" target="_blank">View Decrypted File</a>
+            
+        </div>
+    </div>
+
+{% endblock %}
